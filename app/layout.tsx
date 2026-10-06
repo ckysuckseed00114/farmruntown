@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Outfit, Prompt } from 'next/font/google';
 import './globals.css';
+import BackgroundAtmosphere from '@/components/BackgroundAtmosphere';
 
 const prompt = Prompt({
   subsets: ['latin', 'thai'],
@@ -22,7 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th" className={`${prompt.variable} ${outfit.variable}`}>
-      <body>{children}</body>
+      <body>
+        <BackgroundAtmosphere />
+        {children}
+      </body>
     </html>
   );
 }

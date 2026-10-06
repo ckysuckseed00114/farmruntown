@@ -1,31 +1,40 @@
 # RUNTOWN Pig Farm Calculator
 
-เว็บคำนวณสายการผลิตฟาร์มหมูสำหรับ **RUNTOWN FiveM Roleplay** — สร้างด้วย **Next.js** + **TypeScript**
+เว็บคำนวณสายการผลิตฟาร์มหมูสำหรับ **RUNTOWN FiveM Roleplay** — **Next.js** + **TypeScript**
 
-## โครงสร้าง
-
-```
-├── app/                      # App Router (layout, page, globals.css)
-├── components/pig-farm/      # UI คำนวณฟาร์มหมู
-├── lib/                      # config, calculator, format
-├── public/images/
-│   ├── banners/              # แบนเนอร์หน้าเว็บ
-│   ├── branding/             # โลโก้ / mascot
-│   └── products/             # รูปไอเทมใน UI
-└── scripts/start-dev.bat     # เปิด dev server (Windows)
-```
-
-## คำสั่ง
+## ติดตั้งและรัน
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
 npm run build
 npm run start
+npm run lint
 ```
 
-## Deploy บน Vercel
+บน Windows สามารถรัน dev server ด้วย `scripts/start-dev.bat`
 
-1. Push โปรเจกต์ขึ้น Git
-2. Import ที่ [vercel.com/new](https://vercel.com/new) — Vercel จะ detect **Next.js** อัตโนมัติ
-3. ไม่ต้องตั้ง build command พิเศษ (`next build` ใช้ค่า default)
+## โครงสร้างโปรเจกต์
+
+```
+app/                          layout, หน้าแรก, สไตล์ global
+components/pig-farm/          UI หลัก (PigFarmCalculator.tsx)
+lib/
+  calculator.ts               สูตรคำนวณสายการผลิต
+  config.ts                   ค่าคงที่จากเซิร์ฟ (ราคา, เวลา, น้ำหนัก)
+  format.ts                   จัดรูปแบบตัวเลข
+public/images/
+  banners/                    แบนเนอร์ hero
+  branding/                   mascot
+  products/                   รูปไอเทมใน UI
+scripts/start-dev.bat
+```
+
+## แก้ข้อความ / ค่าในเกม
+
+| ต้องการแก้ | ไฟล์ |
+|-----------|------|
+| ชื่อแท็บเบราว์เซอร์ | `app/layout.tsx` |
+| ข้อความแบนเนอร์, เมนูบน | `components/pig-farm/PigFarmCalculator.tsx` |
+| ราคา Pack, เวลาโพเซส, อัตราแลกเปลี่ยนข้าว–หมู | `lib/config.ts` |
+| สไตล์ สี ฟอนต์ | `app/globals.css` |

@@ -1,16 +1,17 @@
-﻿    /* ==========================================================================
+    /* ==========================================================================
        DESIGN SYSTEM - RUNTOWN FIVEM ROLEPLAY THEME
        ========================================================================== */
     :root {
       /* Dark Obsidian & Runtown Emerald/Mint Theme */
-      --bg-base: #0a0e17;
-      --bg-surface: #111827;
-      --card-bg: rgba(16, 24, 39, 0.9);
-      --card-border: rgba(30, 41, 59, 0.85);
+      --bg-base: #070b13;
+      --bg-gradient: radial-gradient(ellipse 90% 70% at 50% -10%, #0d211a 0%, #070b13 60%, #04060a 100%);
+      --bg-surface: rgba(15, 23, 42, 0.75);
+      --card-bg: rgba(13, 20, 33, 0.82);
+      --card-border: rgba(52, 211, 153, 0.16);
       --card-hover-border: rgba(52, 211, 153, 0.45);
       
-      --input-bg: rgba(10, 15, 26, 0.95);
-      --input-border: rgba(51, 65, 85, 0.7);
+      --input-bg: rgba(7, 12, 22, 0.85);
+      --input-border: rgba(51, 65, 85, 0.6);
       --input-focus: #10b981;
       
       --text-main: #f1f5f9;
@@ -20,22 +21,22 @@
       
       /* Runtown FiveM Mint/Green & Accents */
       --fivem-green: #10b981;
-      --fivem-green-glow: rgba(52, 211, 153, 0.25);
+      --fivem-green-glow: rgba(52, 211, 153, 0.28);
       --fivem-green-light: #34d399;
       --fivem-green-border: rgba(52, 211, 153, 0.35);
       --runtown-mint: #38ef7d;
       --fivem-cyan: #06b6d4;
       
       --accent-pork: #fb7185;
-      --accent-pork-bg: rgba(244, 63, 94, 0.12);
+      --accent-pork-bg: rgba(244, 63, 94, 0.14);
       --accent-rice: #fbbf24;
-      --accent-rice-bg: rgba(245, 158, 11, 0.12);
+      --accent-rice-bg: rgba(245, 158, 11, 0.14);
       --accent-pack: #a78bfa;
-      --accent-pack-bg: rgba(139, 92, 246, 0.12);
+      --accent-pack-bg: rgba(139, 92, 246, 0.14);
       
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
       
       --radius-sm: 8px;
       --radius-md: 12px;
@@ -43,13 +44,14 @@
     }
 
     [data-theme="light"] {
-      --bg-base: #f8fafc;
-      --bg-surface: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --card-border: rgba(203, 213, 225, 0.85);
+      --bg-base: #f4f8f6;
+      --bg-gradient: radial-gradient(ellipse 90% 70% at 50% -10%, #dcfce7 0%, #f0fdf4 35%, #f8fafc 100%);
+      --bg-surface: rgba(255, 255, 255, 0.9);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(16, 185, 129, 0.18);
       --card-hover-border: rgba(16, 185, 129, 0.5);
       
-      --input-bg: #ffffff;
+      --input-bg: rgba(255, 255, 255, 0.95);
       --input-border: #cbd5e1;
       --input-focus: #059669;
       
@@ -65,9 +67,9 @@
       --runtown-mint: #059669;
       --fivem-cyan: #0891b2;
       
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);
     }
 
     * {
@@ -80,18 +82,22 @@
 
     body {
       background-color: var(--bg-base);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
       padding: 20px 16px 60px;
       line-height: 1.5;
       position: relative;
       overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: background 0.4s ease, color 0.3s ease;
     }
 
     .container {
       max-width: 1240px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     /* Top Nav / Controls */
@@ -308,6 +314,8 @@
       padding: 12px 18px;
       margin-bottom: 22px;
       box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
     }
 
     .stream-item {
@@ -351,13 +359,15 @@
       border-radius: var(--radius-lg);
       padding: 22px;
       box-shadow: var(--shadow-md);
-      transition: border-color 0.25s ease;
-      contain: layout style paint;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
       margin-bottom: 22px;
     }
 
     .glass-card:hover {
       border-color: var(--card-hover-border);
+      box-shadow: var(--shadow-lg), 0 0 25px rgba(16, 185, 129, 0.08);
     }
 
     .card-title-bar {
@@ -941,3 +951,211 @@
       opacity: 1;
       visibility: visible;
     }
+
+    /* ==========================================================================
+       BACKGROUND ATMOSPHERE & SCENE EFFECTS (สไตล์บรรยากาศสบายตา + ธีมฟาร์ม RUNTOWN)
+       ========================================================================== */
+    .bg-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      contain: strict;
+    }
+
+    /* Top Cyber Horizon Glow */
+    .bg-top-accent-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #10b981 30%, #38ef7d 50%, #06b6d4 70%, transparent 100%);
+      filter: blur(0.5px);
+      box-shadow: 0 2px 18px rgba(16, 185, 129, 0.6);
+      opacity: 0.85;
+    }
+
+    [data-theme="light"] .bg-top-accent-line {
+      opacity: 0.6;
+      box-shadow: 0 2px 12px rgba(5, 150, 105, 0.4);
+    }
+
+    /* Glowing Ambient Aurora Orbs */
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(95px);
+      pointer-events: none;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .bg-orb-emerald {
+      width: 580px;
+      height: 580px;
+      top: -140px;
+      left: -80px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.24) 0%, rgba(16, 185, 129, 0.05) 55%, transparent 75%);
+      animation: float-orb-emerald 20s ease-in-out infinite alternate;
+    }
+
+    .bg-orb-cyan {
+      width: 520px;
+      height: 520px;
+      top: 25%;
+      right: -100px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(6, 182, 212, 0.03) 60%, transparent 80%);
+      animation: float-orb-cyan 24s ease-in-out infinite alternate;
+    }
+
+    .bg-orb-gold {
+      width: 440px;
+      height: 440px;
+      bottom: 8%;
+      left: 8%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.02) 60%, transparent 80%);
+      animation: float-orb-gold 22s ease-in-out infinite alternate;
+    }
+
+    .bg-orb-mint {
+      width: 500px;
+      height: 500px;
+      top: 60%;
+      right: 18%;
+      background: radial-gradient(circle, rgba(56, 239, 125, 0.13) 0%, rgba(56, 239, 125, 0.02) 60%, transparent 80%);
+      animation: float-orb-mint 26s ease-in-out infinite alternate;
+    }
+
+    /* Light Theme Orbs */
+    [data-theme="light"] .bg-orb-emerald {
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.13) 0%, transparent 70%);
+      filter: blur(110px);
+    }
+    [data-theme="light"] .bg-orb-cyan {
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, transparent 70%);
+      filter: blur(110px);
+    }
+    [data-theme="light"] .bg-orb-gold {
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+      filter: blur(110px);
+    }
+    [data-theme="light"] .bg-orb-mint {
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.09) 0%, transparent 70%);
+      filter: blur(110px);
+    }
+
+    /* Orb Animations */
+    @keyframes float-orb-emerald {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(70px, 45px, 0) scale(1.08);
+      }
+      100% {
+        transform: translate3d(-35px, 90px, 0) scale(0.94);
+      }
+    }
+
+    @keyframes float-orb-cyan {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(-60px, 70px, 0) scale(1.12);
+      }
+      100% {
+        transform: translate3d(50px, -45px, 0) scale(0.92);
+      }
+    }
+
+    @keyframes float-orb-gold {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(50px, -60px, 0) scale(1.07);
+      }
+      100% {
+        transform: translate3d(-45px, 35px, 0) scale(0.96);
+      }
+    }
+
+    @keyframes float-orb-mint {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(-70px, -35px, 0) scale(1.1);
+      }
+      100% {
+        transform: translate3d(55px, 45px, 0) scale(0.9);
+      }
+    }
+
+    /* High-Tech Cyber-Farm Grid Matrix */
+    .bg-cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(52, 211, 153, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.045) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 80% 65% at 50% 28%, black 15%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 28%, black 15%, transparent 80%);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    [data-theme="light"] .bg-cyber-grid {
+      background-image: 
+        linear-gradient(to right, rgba(16, 185, 129, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.035) 1px, transparent 1px);
+      opacity: 0.65;
+    }
+
+    /* Subtle Dot Matrix Pattern */
+    .bg-dot-matrix {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.1) 1.2px, transparent 1.2px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(circle at 50% 35%, black 25%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at 50% 35%, black 25%, transparent 80%);
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    [data-theme="light"] .bg-dot-matrix {
+      background-image: radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      opacity: 0.5;
+    }
+
+    /* Floating Particles Canvas */
+    .bg-particles-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    [data-theme="light"] .bg-particles-canvas {
+      opacity: 0.35;
+    }
+
+    /* Radial Vignette Mask for Visual Comfort & Depth */
+    .bg-vignette-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(4, 7, 13, 0.65) 100%);
+      pointer-events: none;
+    }
+
+    [data-theme="light"] .bg-vignette-overlay {
+      background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(241, 245, 249, 0.55) 100%);
+    }
+
