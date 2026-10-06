@@ -116,6 +116,10 @@ export function porkFromHours(hours: number): number {
   return secPerPork > 0 ? totalSec / secPerPork : 0;
 }
 
+export function porkFromMinutes(minutes: number): number {
+  return porkFromHours(minutes / 60);
+}
+
 export function referenceRow(rice: number) {
   const pens = rice / config.ricePerPen;
   const batches = Math.ceil(pens / config.penMaxSlots);

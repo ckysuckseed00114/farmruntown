@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import {
   calculateFromPorkCount,
-  porkFromHours,
+  porkFromMinutes,
   porkFromMoney,
   porkFromPacks,
   porkFromPens,
@@ -15,7 +15,7 @@ import {
 import { REFERENCE_RICE_PRESETS, RUNTOWN_CONFIG as config, type InputSource } from '@/lib/config';
 import { fmt, fmtPrecise, inputDisplayValue, numForInput } from '@/lib/format';
 
-type InputKey = 'rice' | 'pen' | 'pork' | 'pack' | 'money' | 'hours';
+type InputKey = 'rice' | 'pen' | 'pork' | 'pack' | 'money' | 'minutes';
 
 type InputState = Record<InputKey, string>;
 
@@ -25,7 +25,7 @@ const EMPTY_INPUTS: InputState = {
   pork: '',
   pack: '',
   money: '',
-  hours: '',
+  minutes: '',
 };
 
 function mergeInputsFromCalc(calc: CalcResult, source: InputSource, current: InputState): InputState {
@@ -35,8 +35,10 @@ function mergeInputsFromCalc(calc: CalcResult, source: InputSource, current: Inp
     pork: source === 'pork' ? current.pork : inputDisplayValue(numForInput(calc.pork)),
     pack: source === 'pack' ? current.pack : inputDisplayValue(numForInput(calc.packs)),
     money: source === 'money' ? current.money : inputDisplayValue(numForInput(Math.round(calc.grossAvg))),
-    hours:
-      source === 'hours' ? current.hours : inputDisplayValue(numForInput(Number(calc.totalHours.toFixed(2)))),
+    minutes:
+      source === 'minutes'
+        ? current.minutes
+        : inputDisplayValue(numForInput(Number(calc.totalMin.toFixed(1)))),
   };
 }
 
@@ -79,7 +81,11 @@ export default function PigFarmCalculator() {
   const stepValue = (key: InputKey, delta: number, porkResolver: (n: number) => number) => {
     let cur = parseFloat(inputs[key]) || 0;
     let next = Math.max(0, cur + delta);
-    if (!Number.isInteger(next)) next = Math.round(next * 10) / 10;
+    if (key === 'minutes') {
+      next = Math.round(next);
+    } else if (!Number.isInteger(next)) {
+      next = Math.round(next * 10) / 10;
+    }
     const value = next === 0 ? '' : String(next);
     handleInput(key, porkResolver)(value);
   };
@@ -97,49 +103,7 @@ export default function PigFarmCalculator() {
     showToast(`โหลดค่าตัวอย่าง ${type.toUpperCase()}: ${fmt(val)} เรียบร้อย`);
   };
 
-  const resetAll = () => {
-    setActiveSource('reset');
-    setCalc(calculateFromPorkCount(0));
-    setInputs(EMPTY_INPUTS);
-    showToast('ล้างข้อมูลและรีเซ็ตค่าเริ่มต้นเรียบร้อย');
-  };
-
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
-
-  const copyDiscord = async () => {
-    const text = `🐷 **สรุปผลการฟาร์มหมู RUNTOWN FIVEM** 🐷
-━━━━━━━━━━━━━━━━━━━━━
-🌾 **ต้นข้าวที่ต้องใช้:** ${fmtPrecise(calc.rice)} ต้น (${fmt(calc.rice * config.weightRice, 1)} kg)
-🐷 **จำนวนหมูที่เลี้ยง:** ${fmtPrecise(calc.pens)} ตัว (${calc.batches} รอบเลี้ยง @ 200฿/ตัว)
-🥩 **เนื้อหมูโพเซสที่ได้:** ${fmtPrecise(calc.pork)} ชิ้น (${fmt(calc.pork * config.weightRawPork, 1)} kg)
-📦 **จำนวนแพคที่ได้:** ${fmtPrecise(calc.packs)} Pack (${fmt(calc.packs * config.weightPack, 1)} kg)
-━━━━━━━━━━━━━━━━━━━━━
-⏱️ **เวลาเลี้ยงหมู (15m/รอบ):** ${calc.batches * 15} นาที (${((calc.batches * 15) / 60).toFixed(1)} ชม.)
-⏱️ **เวลาโพเซส:** ${((calc.pork * config.procSec) / 60).toFixed(0)} นาที
-⏱️ **เวลาแพค:** ${((calc.packs * config.packSec) / 60).toFixed(0)} นาที
-⏳ **เวลารวมทั้งหมด:** ${calc.totalMin.toFixed(0)} นาที (~${(calc.totalMin / 60).toFixed(2)} ชั่วโมง)
-━━━━━━━━━━━━━━━━━━━━━
-💵 **ยอดขายรวม (Gross Sales):** ฿${fmt(calc.grossAvg)}
-🏷️ **หักต้นทุนซื้อลูกหมู:** - ฿${fmt(calc.totalPigCost)}
-💰 **กำไรสุทธิที่ได้รับจริง:** ฿${fmt(calc.netProfitAvg)}
-✨ **กำไรเฉลี่ยต่อหมู 1 ตัว:** ฿${fmt(calc.pens > 0 ? calc.netProfitAvg / calc.pens : 0)} / ตัว
-💵 **เฉลี่ยกำไรต่อชั่วโมง:** ฿${fmt(calc.totalMin > 0 ? calc.netProfitAvg / (calc.totalMin / 60) : 0)} / ชม.
-━━━━━━━━━━━━━━━━━━━━━
-*คำนวณโดย RUNTOWN Pig Farm Calculator*`;
-
-    try {
-      await navigator.clipboard.writeText(text);
-      showToast('คัดลอกข้อความสำหรับส่งใน Discord แล้ว!');
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showToast('คัดลอกข้อความเรียบร้อย!');
-    }
-  };
 
   const fullHours = Math.floor(calc.totalMin / 60);
   const remainingMinutes = Math.round(calc.totalMin % 60);
@@ -152,14 +116,14 @@ export default function PigFarmCalculator() {
       <div className="container">
         <div className="top-nav">
           <div className="nav-left">
-            <Image src="/images/runtown_mascot.png" alt="RUNTOWN" className="nav-logo-img" width={44} height={44} />
+            <Image src="/images/branding/runtown_mascot.png" alt="RUNTOWN" className="nav-logo-img" width={44} height={44} />
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span className="brand-title">RUNTOWN</span>
-                <span className="server-tag">FiveM Roleplay</span>
+                <span className="server-tag">RUNTOWN Roleplay</span>
               </div>
               <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
-                ระบบคำนวณและสายการผลิตฟาร์มหมู
+                ระบบคำนวณฟาร์มหมู
               </span>
             </div>
           </div>
@@ -168,27 +132,21 @@ export default function PigFarmCalculator() {
               <span>{theme === 'dark' ? '☀️' : '🌙'}</span>{' '}
               <span>{theme === 'dark' ? 'โหมดสว่าง' : 'โหมดมืด'}</span>
             </button>
-            <button type="button" className="btn" onClick={resetAll} title="ล้างข้อมูลและคำนวณใหม่">
-              🔄 ล้างข้อมูล
-            </button>
-            <button type="button" className="btn btn-primary" onClick={copyDiscord} title="คัดลอกสรุปสำหรับ Discord">
-              📋 คัดลอก Discord
-            </button>
           </div>
         </div>
 
         <div className="fivem-farm-banner">
           <div className="banner-left-wrap">
             <div className="banner-mascot-badge">
-              <Image src="/images/runtown_mascot.png" alt="RUNTOWN Pig Farm Mascot" width={74} height={74} />
+              <Image src="/images/branding/runtown_mascot.png" alt="RUNTOWN Pig Farm Mascot" width={74} height={74} />
             </div>
             <div>
               <div className="banner-subhead">
-                <span>🌱</span> สายการผลิตเนื้อหมู • RUNTOWN CITY
+                <span>🌱</span> ฟาร์มหมู • RUNTOWN
               </div>
               <div className="banner-title">ฟาร์มหมู RUNTOWN</div>
               <div className="banner-desc">
-                ข้าว 12 ต้น = เลี้ยงหมู 6 ตัว = แล่หมูดิบได้ 60 ชิ้น (หมู 1 ตัว = ข้าว 2 ต้น = หมูดิบ 10 ชิ้น)
+
               </div>
             </div>
           </div>
@@ -314,12 +272,12 @@ export default function PigFarmCalculator() {
                       resolver: porkFromMoney,
                     },
                     {
-                      key: 'hours' as const,
+                      key: 'minutes' as const,
                       label: '⏱️ เวลาฟาร์มที่ต้องการ',
                       pill: 'เลี้ยง + โพ + แพค',
-                      unit: 'ชั่วโมง',
-                      step: [0.5, -0.5] as const,
-                      resolver: porkFromHours,
+                      unit: 'นาที',
+                      step: [15, -15] as const,
+                      resolver: porkFromMinutes,
                     },
                   ] as const
                 ).map(({ key, label, pill, unit, step, resolver }) => (
@@ -337,11 +295,16 @@ export default function PigFarmCalculator() {
                         className="num-input"
                         placeholder="0"
                         min={0}
-                        step={key === 'hours' ? 0.25 : key === 'money' ? 1000 : 'any'}
+                        step={key === 'minutes' ? 1 : key === 'money' ? 1000 : 'any'}
                         value={inputs[key]}
                         onChange={(e) => handleInput(key, resolver)(e.target.value)}
                       />
-                      <span className="unit-tag">{unit}</span>
+                      <span className="unit-tag">
+                        {unit}
+                        {key === 'minutes' && (parseFloat(inputs.minutes) || calc.totalMin) > 0
+                          ? ` (~${((parseFloat(inputs.minutes) || calc.totalMin) / 60).toFixed(2)} ชม.)`
+                          : ''}
+                      </span>
                       <div className="stepper-btn-group">
                         <button type="button" className="btn-step" onClick={() => stepValue(key, step[0], resolver)}>
                           +
@@ -405,7 +368,7 @@ export default function PigFarmCalculator() {
                     itemName="Packed Pork"
                     price="$422"
                     weight="1.0 kg/Pack"
-                    img="/images/packed_pork.jpg"
+                    img="/images/products/packed_pork.jpg"
                     amount={`${fmtPrecise(calc.packs)} Pack`}
                     sub={`น้ำหนัก ${fmt(calc.wPack, 1)} kg`}
                   />
@@ -417,7 +380,7 @@ export default function PigFarmCalculator() {
                     desc="นำเนื้อหมูแพ็กมาขายที่จุดรับซื้อสินค้าในเมือง RUNTOWN (ราคา 422 - 425 บาท)"
                     itemName="Packed Pork"
                     price="$422 - $425"
-                    img="/images/packed_pork.jpg"
+                    img="/images/products/packed_pork.jpg"
                     amount={`฿${fmt(calc.grossAvg)}`}
                     sub={`กำไรสุทธิ ฿${fmt(calc.netProfitAvg)}`}
                     chipLabel="ขายได้:"
@@ -671,7 +634,7 @@ function TimelineStep({
   itemName,
   price,
   weight,
-  img = '/images/raw_pork.jpg',
+  img = '/images/products/raw_pork.jpg',
   chipLabel = 'ได้รับ:',
   amount,
   sub,

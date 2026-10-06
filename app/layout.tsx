@@ -15,8 +15,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'RUNTOWN FIVEM | ระบบคำนวณสายการผลิตฟาร์มหมู',
-  description: 'เครื่องคำนวณสายการผลิตฟาร์มหมู RUNTOWN FiveM Roleplay',
+  title: 'RUNTOWN | ระบบคำนวณฟาร์มหมู',
+  description: 'Website คำนวณการฟาร์มหมู เมือง:RUNTOWN',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

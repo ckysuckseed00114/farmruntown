@@ -24,6 +24,5 @@ export type InputSource =
   | 'pork'
   | 'pack'
   | 'money'
-  | 'hours'
-  | 'reset'
+  | 'minutes'
   | 'init';

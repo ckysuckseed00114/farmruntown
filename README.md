@@ -5,12 +5,14 @@
 ## โครงสร้าง
 
 ```
-├── app/                 # App Router (layout, page, globals.css)
-├── components/          # UI React (PigFarmCalculator)
-├── lib/                 # config, calculator, format
-├── public/images/       # รูป static
-├── docs/                # Excel อ้างอิง
-└── scripts/             # เปิด dev server (Windows)
+├── app/                      # App Router (layout, page, globals.css)
+├── components/pig-farm/      # UI คำนวณฟาร์มหมู
+├── lib/                      # config, calculator, format
+├── public/images/
+│   ├── banners/              # แบนเนอร์หน้าเว็บ
+│   ├── branding/             # โลโก้ / mascot
+│   └── products/             # รูปไอเทมใน UI
+└── scripts/start-dev.bat     # เปิด dev server (Windows)
 ```
 
 ## คำสั่ง
